@@ -35,10 +35,6 @@ def get_user(user_id, token):
     return
 
 
-def update_user():
-    return
-
-
 def get_vault_id(token):
     url = base_url + "/vault/account"
     headers = {"Accept": "application/json",
@@ -56,7 +52,7 @@ def add_vault_user(userID, token):
                "Content-Type": "application/json"}
     content = {"user_id": userID,
                "role": "inject"}
-    
+
     response = requests.post(url, headers=headers, json=content)
     print(response.text)
 
@@ -87,6 +83,24 @@ def create_user(token, name, email):
     BT_user_id = responseJSON["id"]
 
     add_vault_user(BT_user_id, token)
+
+    return
+
+
+def update_user(user_id, token):
+    url = base_url + f"/user/{user_id}"
+    headers = {"Authorization": f"Bearer {token}",
+               "Content-Type": "application/json"}
+    params = {"id": user_id}
+    # These cannot be changed. They are read-only values. They don't seem important because you have to be in the online management portal to run them.
+    content = {
+        # "perm_view_support_reports": "user_sessions",
+        # "perm_view_presentation_reports": "user_sessions",
+        # "perm_view_vault_reports": "view_user_events"
+    }
+
+    response = requests.patch(url, headers=headers, params=params, json=content)
+    print(response.text)
 
     return
 

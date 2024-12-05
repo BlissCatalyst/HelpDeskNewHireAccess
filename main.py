@@ -10,6 +10,6 @@ load_dotenv()
 
 BTaccess_token = BT_get_token()["access_token"]
 
-# create_user(BTaccess_token, "HelpDesk Test", "HelpDeskTest@ensignservices.net")
+create_user(BTaccess_token, "HelpDesk Test", "HelpDeskTest@ensignservices.net")
 
-get_user(698, BTaccess_token)
+# get_user(698, BTaccess_token)
