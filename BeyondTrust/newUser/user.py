@@ -23,6 +23,18 @@ def get_all_users(token, email):
     return response.json()
 
 
+def get_user(user_id, token):
+    url = base_url + f"/user/{user_id}"
+    headers = {"Accept": "application/json",
+               "Authorization": f"Bearer {token}"}
+    params = {"id": user_id}
+
+    response = requests.get(url, headers=headers, params=params)
+    print(response.text)
+
+    return
+
+
 def update_user():
     return
 
@@ -38,9 +50,15 @@ def get_vault_id(token):
     return
 
 
-def add_vault_user(userID):
+def add_vault_user(userID, token):
     url = base_url + f"/vault/account/1/user"
-    # TODO: finish adding user to vault.
+    headers = {"Authorization": f"Bearer {token}",
+               "Content-Type": "application/json"}
+    content = {"user_id": userID,
+               "role": "inject"}
+    
+    response = requests.post(url, headers=headers, json=content)
+    print(response.text)
 
     return
 
@@ -48,7 +66,7 @@ def add_vault_user(userID):
 def create_user(token, name, email):
     # Check if user already has an account.
     if get_all_users(token, email):
-        print(f"Beyond Trust account already exists for: {email}")
+        print(f"A Beyond Trust account already exists for: {email}")
         return
 
     create_user_payload_obj = BTNewUser(name, email)
@@ -67,6 +85,8 @@ def create_user(token, name, email):
 
     responseJSON = response.json()
     BT_user_id = responseJSON["id"]
+
+    add_vault_user(BT_user_id, token)
 
     return
 
