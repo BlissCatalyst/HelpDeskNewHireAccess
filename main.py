@@ -1,6 +1,12 @@
+import os
+from dotenv import load_dotenv
 from BeyondTrust.auth.BTauth import BT_get_token
+from BeyondTrust.newUser.user import create_user
+from BeyondTrust.newUser.user import BTNewUser
 
-# print(BT_get_token())
+# Load environment variables
+load_dotenv()
 
-access_token = BT_get_token()["access_token"]
-print(access_token)
+BTaccess_token = BT_get_token()["access_token"]
+
+create_user(BTaccess_token, "HelpDesk Test", "HelpDeskTest@ensignservices.net")

@@ -8,8 +8,9 @@ load_dotenv()
 
 def BT_get_token():
     BT_CLIENTIDSECRET = os.getenv("BT_CLIENTIDSECRET")
+    base_url = os.getenv("BT_AUTH_IP")
 
-    url = "https://help.ensignsupport.net/oauth2/token"
+    url = base_url
     headers = {
         "Authorization": f"Basic {BT_CLIENTIDSECRET}",
         "Content-Type": "application/json"
