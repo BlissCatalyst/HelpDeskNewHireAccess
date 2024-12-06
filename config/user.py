@@ -18,17 +18,21 @@ def get_ADUser(AD_username):
     search_filter = f"(sAMAccountName={AD_username})"
     search_attributes = ["givenName", "sn", "mail"]
 
-    conn.search(search_base=search_base, search_filter=search_filter, attributes=search_attributes)
+    conn.search(search_base=search_base, search_filter=search_filter,
+                attributes=search_attributes)
 
-    for entry in conn.entries:
-        print(f"First Name: {entry.givenName}")
-        print(f"Last Name: {entry.sn}")
-        print(f"Email: {entry.mail}")
+    # Assuming there is only one result from the search.
+    result = conn.entries[0]
 
-    return
+    new_hire = userMain(AD_username, result.givenName, result.sn, result.mail)
+
+    return new_hire
 
 
 class userMain:
-    def __init__(self, name, email):
-        self.name = name
+    def __init__(self, ADUsername, first_name, last_name, email):
+        self.name = f"{first_name} {last_name}"
+        self.username = ADUsername
+        self.firstName = first_name
+        self.lastName = last_name
         self.email = email
