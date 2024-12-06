@@ -54,9 +54,9 @@ def add_vault_user(userID, token):
                "role": "inject"}
 
     response = requests.post(url, headers=headers, json=content)
-    print(response.text)
+    # print(response.text)
 
-    return
+    return response
 
 
 def create_user(token, name, email):
