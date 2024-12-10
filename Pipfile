@@ -8,6 +8,10 @@ requests = "*"
 python-dotenv = "*"
 jsonpickle = "*"
 ldap3 = "*"
+google-auth-oauthlib = "*"
+google-auth = "*"
+google-auth-httplib2 = "*"
+google-api-python-client = "*"
 
 [dev-packages]
 

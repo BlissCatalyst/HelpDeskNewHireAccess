@@ -1,9 +1,9 @@
 import os
 import sys
 from dotenv import load_dotenv
+from config.user import get_ADUser
 from BeyondTrust.auth.BTauth import BT_get_token
 from BeyondTrust.newUser.user import create_user
-from config.user import get_ADUser
 
 # Load environment variables
 load_dotenv()
