@@ -5,6 +5,8 @@ from config.user import get_ADUser
 from BeyondTrust.auth.BTauth import BT_get_token
 from BeyondTrust.newUser.user import create_user
 
+from GoogleAdmin.newUser.user import get_user
+
 # Load environment variables
 load_dotenv()
 
@@ -18,3 +20,5 @@ new_hire = get_ADUser(cmd_arg)
 
 # create_user(BTaccess_token, "HelpDesk Test", "HelpDeskTest@ensignservices.net")
 # create_user(BTaccess_token, new_hire.name, new_hire.email)
+
+get_user(new_hire)
