@@ -20,9 +20,11 @@ def get_user(user_id):
 def get_role_info_from_id(customer_id, role_id):
     credentials = create_google_credentials()
 
-    googleadmin_service = googleapiclient.discovery.build("admin", "directory_v1", credentials=credentials)
+    googleadmin_service = googleapiclient.discovery.build(
+        "admin", "directory_v1", credentials=credentials)
 
-    role_info = googleadmin_service.roles().get(customer=customer_id, roleId=role_id).execute()
+    role_info = googleadmin_service.roles().get(
+        customer=customer_id, roleId=role_id).execute()
 
     print(role_info)
 
@@ -32,7 +34,8 @@ def get_role_info_from_id(customer_id, role_id):
 def get_all_roles(customer_id):
     credentials = create_google_credentials()
 
-    googleadmin_service = googleapiclient.discovery.build("admin", "directory_v1", credentials=credentials)
+    googleadmin_service = googleapiclient.discovery.build(
+        "admin", "directory_v1", credentials=credentials)
 
     role_list = googleadmin_service.roles().list(customer=customer_id).execute()
 
@@ -69,18 +72,41 @@ def get_role_assignment_list(customer_id):
     return
 
 
-def insert_role_assignment(customer_id, role_id, user_id):
+def insert_role_assignment(customer_id, user_id):
     credentials = create_google_credentials()
 
-    googleadmin_service = googleapiclient.discovery.build("admin", "directory_v1", credentials=credentials)
+    googleadmin_service = googleapiclient.discovery.build(
+        "admin", "directory_v1", credentials=credentials)
 
-    body = {
-        "roleId": role_id,
-        "assignTo": user_id,
+    # Must assign each role individually
+    for role in HD1_roles:
+        role["assignTo"] = user_id
+        body = {
+            **role,
+        }
+        new_role_assignment = googleadmin_service.roleAssignments().insert(
+            customer=customer_id, body=body).execute()
+
+    return
+
+
+HD1_roles = [
+    {
+        "roleId": 12662052409573380,  # Help Desk Administrator
+        "assignTo": None,
+        "scopeType": "CUSTOMER",
+        "kind": "admin#directory#roleAssignment"
+    },
+    {
+        "roleId": 12662052409573382,  # EFS-Enrollers
+        "assignTo": None,
+        "scopeType": "CUSTOMER",
+        "kind": "admin#directory#roleAssignment"
+    },
+    {
+        "roleId": 12662052409573389,  # Ensign Help Desk
+        "assignTo": None,
         "scopeType": "CUSTOMER",
         "kind": "admin#directory#roleAssignment"
     }
-
-    new_role_assignment = googleadmin_service.roleAssignments().insert(customer=customer_id, body=body).execute()
-
-    return
+]
