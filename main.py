@@ -1,11 +1,13 @@
 import os
 import sys
 from dotenv import load_dotenv
+
 from config.user import get_ADUser
+
 from BeyondTrust.auth.BTauth import BT_get_token
 from BeyondTrust.newUser.user import create_user
 
-from GoogleAdmin.newUser.user import get_user, get_role_assignment_list
+from GoogleAdmin.newUser.user import get_user, get_role_assignment_list, get_role_info_from_id, get_all_roles
 
 # Load environment variables
 load_dotenv()
@@ -22,5 +24,7 @@ GOOGLE_CUSTOMER_ID = os.getenv("GOOGLE_CUSTOMER_ID")
 # create_user(BTaccess_token, "HelpDesk Test", "HelpDeskTest@ensignservices.net")
 # create_user(BTaccess_token, new_hire.name, new_hire.email)
 
-# get_user(new_hire)
-get_role_assignment_list(GOOGLE_CUSTOMER_ID)
+# get_user("")
+# get_role_assignment_list(GOOGLE_CUSTOMER_ID)
+# get_role_info_from_id(GOOGLE_CUSTOMER_ID, "")
+# get_all_roles(GOOGLE_CUSTOMER_ID)
