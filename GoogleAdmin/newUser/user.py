@@ -77,7 +77,7 @@ def get_role_assignment_list(customer_id):
     return
 
 
-def insert_new_user(newhire_email, newhire_first_name, newhire_last_name):
+def insert_new_user(newhire_email, newhire_first_name, newhire_last_name, newhire_employeeID):
     credentials = create_google_credentials()
 
     googleadmin_service = googleapiclient.discovery.build(
@@ -112,6 +112,13 @@ def insert_new_user(newhire_email, newhire_first_name, newhire_last_name):
         "isEnforcedIn2Sv": False,
         "archived": False,
         "orgUnitPath": "/Google Help Desk Admins only"
+        # "externalIds": [
+        #     {
+        #         "customType": "EID",
+        #         "type": "custom",
+        #         "value": newhire_employeeID
+        #     }
+        # ]
     }
 
     new_user_result = googleadmin_service.users().insert(body=body).execute()
