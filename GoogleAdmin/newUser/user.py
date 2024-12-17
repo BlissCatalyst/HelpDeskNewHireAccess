@@ -1,7 +1,12 @@
+import os
+from dotenv import load_dotenv
 import pprint
 import json
 import googleapiclient.discovery
 from GoogleAdmin.auth.auth import create_google_credentials
+
+# Load environment variables
+load_dotenv()
 
 
 def get_user(user_id):
@@ -72,6 +77,23 @@ def get_role_assignment_list(customer_id):
     return
 
 
+def insert_new_user(newhire_email, newhire_first_name, newhire_last_name):
+    credentials = create_google_credentials()
+
+    googleadmin_service = googleapiclient.discovery.build("admin", "directory_v1", credentials=credentials)
+
+    GOOGLE_TEMP_PASS = os.getenv("GOOGLE_TEMP_PASS")
+
+    body = {
+        "primaryEmail": newhire_email,
+        
+    }
+
+    new_user_result = googleadmin_service.users().insert(body=body).execute()
+
+    return
+
+
 def insert_role_assignment(customer_id, user_id):
     credentials = create_google_credentials()
 
@@ -86,6 +108,7 @@ def insert_role_assignment(customer_id, user_id):
         }
         new_role_assignment = googleadmin_service.roleAssignments().insert(
             customer=customer_id, body=body).execute()
+        pprint.pprint(json.dumps(new_role_assignment))
 
     return
 
