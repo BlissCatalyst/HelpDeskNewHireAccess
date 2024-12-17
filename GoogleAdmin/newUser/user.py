@@ -80,13 +80,38 @@ def get_role_assignment_list(customer_id):
 def insert_new_user(newhire_email, newhire_first_name, newhire_last_name):
     credentials = create_google_credentials()
 
-    googleadmin_service = googleapiclient.discovery.build("admin", "directory_v1", credentials=credentials)
+    googleadmin_service = googleapiclient.discovery.build(
+        "admin", "directory_v1", credentials=credentials)
 
     GOOGLE_TEMP_PASS = os.getenv("GOOGLE_TEMP_PASS")
 
     body = {
         "primaryEmail": newhire_email,
-        
+        "password": GOOGLE_TEMP_PASS,
+        "isAdmin": False,
+        "suspended": False,
+        "changePasswordAtNextLogin": True,
+        "ipWhitelisted": False,
+        "name": {
+            "givenName": newhire_first_name,
+            "familyName": newhire_last_name,
+            "fullName": f"{newhire_first_name} {newhire_last_name}"
+        },
+        "emails": [
+            {
+                "address": newhire_email,
+                "primary": True
+            },
+            {
+                "address": f"{newhire_email}.test-google-a.com"
+            }
+        ],
+        "isMailboxSetup": False,
+        "includeInGlobalAddressList": True,
+        "isEnrolledIn2Sv": False,
+        "isEnforcedIn2Sv": False,
+        "archived": False,
+        "orgUnitPath": "/Google Help Desk Admins only"
     }
 
     new_user_result = googleadmin_service.users().insert(body=body).execute()
