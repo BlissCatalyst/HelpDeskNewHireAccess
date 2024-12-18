@@ -111,7 +111,13 @@ def insert_new_user(newhire_email, newhire_first_name, newhire_last_name, newhir
         "isEnrolledIn2Sv": False,
         "isEnforcedIn2Sv": False,
         "archived": False,
-        "orgUnitPath": "/Google Help Desk Admins only"
+        "orgUnitPath": "/Google Help Desk Admins only",
+        "languages": [
+            {
+                "languageCode": "en",
+                "preference": "preferred"
+            }
+        ]
         # "externalIds": [
         #     {
         #         "customType": "EID",
