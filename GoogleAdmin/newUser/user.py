@@ -77,7 +77,7 @@ def get_role_assignment_list(customer_id):
     return
 
 
-def insert_new_user(newhire_email: str, newhire_first_name: str, newhire_last_name: str, newhire_employeeID: int = None):
+def insert_new_user(newhire_email: str, newhire_first_name: str, newhire_last_name: str, newhire_employeeID: int):
     credentials = create_google_credentials()
 
     googleadmin_service = googleapiclient.discovery.build(
@@ -117,14 +117,14 @@ def insert_new_user(newhire_email: str, newhire_first_name: str, newhire_last_na
                 "languageCode": "en",
                 "preference": "preferred"
             }
+        ],
+        "externalIds": [
+            {
+                "customType": "EID",
+                "type": "custom",
+                "value": newhire_employeeID
+            }
         ]
-        # "externalIds": [
-        #     {
-        #         "customType": "EID",
-        #         "type": "custom",
-        #         "value": newhire_employeeID
-        #     }
-        # ]
     }
 
     new_user_result = googleadmin_service.users().insert(body=body).execute()
