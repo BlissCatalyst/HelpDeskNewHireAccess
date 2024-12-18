@@ -77,7 +77,7 @@ def get_role_assignment_list(customer_id):
     return
 
 
-def insert_new_user(newhire_email, newhire_first_name, newhire_last_name, newhire_employeeID):
+def insert_new_user(newhire_email: str, newhire_first_name: str, newhire_last_name: str, newhire_employeeID: int = None):
     credentials = create_google_credentials()
 
     googleadmin_service = googleapiclient.discovery.build(
@@ -129,24 +129,30 @@ def insert_new_user(newhire_email, newhire_first_name, newhire_last_name, newhir
 
     new_user_result = googleadmin_service.users().insert(body=body).execute()
 
+    new_user_role_assign = insert_role_assignment(new_user_result["id"])
+
+    pprint.pprint(new_user_result)
+
     return
 
 
-def insert_role_assignment(customer_id, user_id):
+def insert_role_assignment(user_id):
     credentials = create_google_credentials()
 
     googleadmin_service = googleapiclient.discovery.build(
         "admin", "directory_v1", credentials=credentials)
+    
+    customer_id = os.getenv("GOOGLE_CUSTOMER_ID")
 
     # Must assign each role individually
     for role in HD1_roles:
-        role["assignTo"] = user_id
+        role["assignedTo"] = user_id
         body = {
             **role,
         }
         new_role_assignment = googleadmin_service.roleAssignments().insert(
             customer=customer_id, body=body).execute()
-        pprint.pprint(json.dumps(new_role_assignment))
+        pprint.pprint(new_role_assignment)
 
     return
 
@@ -154,20 +160,17 @@ def insert_role_assignment(customer_id, user_id):
 HD1_roles = [
     {
         "roleId": 12662052409573380,  # Help Desk Administrator
-        "assignTo": None,
+        "assignedTo": None,
         "scopeType": "CUSTOMER",
-        "kind": "admin#directory#roleAssignment"
     },
     {
         "roleId": 12662052409573382,  # EFS-Enrollers
-        "assignTo": None,
+        "assignedTo": None,
         "scopeType": "CUSTOMER",
-        "kind": "admin#directory#roleAssignment"
     },
     {
         "roleId": 12662052409573389,  # Ensign Help Desk
-        "assignTo": None,
+        "assignedTo": None,
         "scopeType": "CUSTOMER",
-        "kind": "admin#directory#roleAssignment"
     }
 ]

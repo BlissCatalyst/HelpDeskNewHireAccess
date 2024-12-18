@@ -164,6 +164,7 @@ cython_debug/
 # Custom files
 userExample.json
 hd-new-hire-access-3e448db21170.json
-example.json
+example*.json
 roles.json
 role_assignment_list*.json
+newuserexample.json
